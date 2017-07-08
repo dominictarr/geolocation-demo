@@ -6,6 +6,7 @@
 <meta charset=utf-8></head>
 <body></body>
 <script>
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var pre = document.createElement('pre')
 document.body.appendChild(pre)
 
@@ -19,11 +20,28 @@ function flatten (p) {
   return o
 }
 
+var positions = []
+
+pre.textContent = 'waiting for position...'
+
 navigator.geolocation.watchPosition(function (e) {
   console.log(e.coords, e.timestamp)
-  pre.textContent = JSON.stringify(flatten(e), null, 2)
+  position.push(flatten(e))
+  //keep just one minute's worth of locations.
+  if(e.timestamp < Date.now() - 60e3) // one minute
+    positions.shift()
+
+  var movement = position.map(function (_e) {
+    return {
+      distance: GreatCircle.distance(_e.latitude, _e.longitude, e.latitude, e.longitude, 'NM'),
+      heading: GreatCircle.bearing(_e.latitude, _e.longitude, e.latitude, e.longitude)
+    }
+  })
+
+  pre.textContent = JSON.stringify({current: flatten(e), movement: movement}, null, 2)
 })
 
 
+},{}]},{},[1]);
 </script>
 </html>

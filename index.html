@@ -33,7 +33,7 @@ navigator.geolocation.watchPosition(function (e) {
   if(e.timestamp < Date.now() - 60e3) // one minute
     positions.shift()
 
-  var movement = position.map(function (_e) {
+  var movement = positions.map(function (_e) {
     return {
       distance: GreatCircle.distance(_e.latitude, _e.longitude, e.latitude, e.longitude, 'NM'),
       heading: GreatCircle.bearing(_e.latitude, _e.longitude, e.latitude, e.longitude)

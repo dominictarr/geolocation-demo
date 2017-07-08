@@ -25,6 +25,7 @@ navigator.geolocation.watchPosition(function (e) {
     positions.shift()
 
   var movement = positions.map(function (_e) {
+    _e = _e.coords
     return {
       distance: GreatCircle.distance(_e.latitude, _e.longitude, e.latitude, e.longitude, 'NM'),
       heading: GreatCircle.bearing(_e.latitude, _e.longitude, e.latitude, e.longitude)

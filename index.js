@@ -24,14 +24,17 @@ navigator.geolocation.watchPosition(function (e) {
   if(e.timestamp < Date.now() - 60e3) // one minute
     positions.shift()
 
+  var lat = e.coords.latitude, log = e.coords.longitude
   var movement = positions.map(function (_e) {
-    _e = _e.coords
+    var _lat = _e.coords.latitude, _log = _e.coords.longitude
     return {
-      distance: GreatCircle.distance(_e.latitude, _e.longitude, e.latitude, e.longitude, 'NM'),
-      heading: GreatCircle.bearing(_e.latitude, _e.longitude, e.latitude, e.longitude)
+      distance: GreatCircle.distance(_lat, _long, lat, long, 'NM'),
+      heading: GreatCircle.bearing(_lat, _long, lat, long)
     }
   })
 
   pre.textContent = JSON.stringify({current: flatten(e), movement: movement}, null, 2)
 })
+
+
 

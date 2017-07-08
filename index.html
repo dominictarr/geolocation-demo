@@ -28,7 +28,7 @@ pre.textContent = 'waiting for position...'
 
 navigator.geolocation.watchPosition(function (e) {
   console.log(e.coords, e.timestamp)
-  position.push(flatten(e))
+  positions.push(flatten(e))
   //keep just one minute's worth of locations.
   if(e.timestamp < Date.now() - 60e3) // one minute
     positions.shift()

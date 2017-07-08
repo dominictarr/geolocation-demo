@@ -35,7 +35,7 @@ navigator.geolocation.watchPosition(function (e) {
 
   var lat = e.coords.latitude, log = e.coords.longitude
   var movement = positions.map(function (_e) {
-    var _lat = _e.coords.latitude, _log = _e.coords.longitude
+    var _lat = _e.coords.latitude, _long = _e.coords.longitude
     return {
       distance: GreatCircle.distance(_lat, _long, lat, long, 'NM'),
       heading: GreatCircle.bearing(_lat, _long, lat, long)

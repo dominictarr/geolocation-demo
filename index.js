@@ -34,7 +34,11 @@ navigator.geolocation.watchPosition(function (e) {
   })
 
   pre.textContent = JSON.stringify({current: flatten(e), movement: movement}, null, 2)
+}, function (err) {
+  pre.textContent = JSON.stringify({error:err.code, message: err.message}, null, 2)
+}, {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
 })
-
-
 

@@ -1,3 +1,5 @@
+var GreatCircle = require('great-circle')
+
 var pre = document.createElement('pre')
 document.body.appendChild(pre)
 

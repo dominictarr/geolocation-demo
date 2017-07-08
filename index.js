@@ -24,7 +24,7 @@ navigator.geolocation.watchPosition(function (e) {
   if(e.timestamp < Date.now() - 60e3) // one minute
     positions.shift()
 
-  var lat = e.coords.latitude, log = e.coords.longitude
+  var lat = e.coords.latitude, long = e.coords.longitude
   var movement = positions.map(function (_e) {
     var _lat = _e.coords.latitude, _long = _e.coords.longitude
     return {

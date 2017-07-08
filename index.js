@@ -29,6 +29,6 @@ navigator.geolocation.watchPosition(function (e) {
     }
   })
 
-  pre.textContent = JSON.stringify(flatten({current:e, movement: movement}), null, 2)
+  pre.textContent = JSON.stringify({current: flatten(e), movement: movement}, null, 2)
 })
 

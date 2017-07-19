@@ -19,13 +19,19 @@ function flatten (p) {
 
 var DEGREE_SYMBOL = '\u00b0'
 
+
 function decimalTudeToMinutes (tude) {
-  return ~~tude.toString()+DEGREE_SYMBOL+Math.abs((tude - ~~(tude))*60)
+  return ~~tude.toString()+DEGREE_SYMBOL+Math.abs((tude - ~~(tude))*60).toPrecision(4)
 }
 
 var positions = []
 
 pre.textContent = 'waiting for position...'
+
+function round(r, n) {
+  var f = Math.pow(10, n)
+  return Math.round(r*f)/f
+}
 
 navigator.geolocation.watchPosition(function (e) {
   positions.push(flatten(e))
@@ -41,23 +47,23 @@ navigator.geolocation.watchPosition(function (e) {
     return {
       distance: GreatCircle.distance(_lat, _long, lat, long, 'NM'),
       heading: GreatCircle.bearing(_lat, _long, lat, long),
-      speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (time / (1000*60*60))
-      time: e.timestamp - _e.timestamp
+      speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (time / (1000*60*60)),
+      time: (e.timestamp - _e.timestamp)/1000
     }
   })
 
-  e = flatten(e)
   position.textContent = (
     decimalTudeToMinutes(e.coords.latitude)
     + ', ' +
-    decimalTudeToMinutes(e.coords.latitude)
+    decimalTudeToMinutes(e.coords.longitude)
   )
-  //meters_per_hour
-  var metersPerHour = e.speed*3600
+
+  E = e
+  var metersPerSecond = e.coords.speed || 0
+  var metersPerHour = metersPerSecond*3600
   var metersPerNauticalMile = 1852.001
   var knots = metersPerHour/metersPerNauticalMile
-  speed.textContent = knots
-
+  speed.textContent = round(knots, 2)
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
   pre.textContent = JSON.stringify({error:err.code, message: err.message}, null, 2)
@@ -66,13 +72,4 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
-
-
-
-
-
-
-
-
-
 

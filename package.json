@@ -12,8 +12,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "set -e; for t in test/*.js; do node $t; done"
+    "test": "set -e; for t in test/*.js; do node $t; done",
+    "appcache": "echo \"CACHE MANIFEST\n/index.html\n#$(date)\" > manifest.appcache",
+    "build": "browserify index.js | indexhtlmify --appcache; npm run appcache"
   },
   "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
   "license": "MIT"
 }
+

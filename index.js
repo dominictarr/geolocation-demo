@@ -19,7 +19,6 @@ function flatten (p) {
 
 var DEGREE_SYMBOL = '\u00b0'
 
-
 function decimalTudeToMinutes (tude) {
   return ~~tude.toString()+DEGREE_SYMBOL+Math.abs((tude - ~~(tude))*60).toPrecision(4)
 }
@@ -35,20 +34,22 @@ function round(r, n) {
 
 navigator.geolocation.watchPosition(function (e) {
   positions.push(flatten(e))
-  //keep just one minute's worth of locations.
 
-  while(positions.length && positions[0].timestamp < Date.now() - 60e3) // one minute
+  //keep 15 minute's worth of locations.
+  while(positions.length && positions[0].timestamp < Date.now() - 15*60e3) // one minute
     positions.shift()
 
   var lat = e.coords.latitude, long = e.coords.longitude
-  var movement = positions.map(function (_e) {
+  var movement = positions.map(function (_e, i) {
     var _lat = _e.coords.latitude, _long = _e.coords.longitude
     var time = e.timestamp - _e.timestamp
-    return {
-      distance: GreatCircle.distance(_lat, _long, lat, long, 'NM'),
-      heading: GreatCircle.bearing(_lat, _long, lat, long),
-      speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (time / (1000*60*60)),
-      time: (e.timestamp - _e.timestamp)/1000
+    if (positions[i+1]) {
+      return {
+        distance: GreatCircle.distance(_lat, _long, lat, long, 'NM'),
+        heading: GreatCircle.bearing(_lat, _long, lat, long),
+        speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (time / (1000*60*60)),
+        time: (e.timestamp - _e.timestamp)/1000
+      }
     }
   })
 
@@ -59,11 +60,19 @@ navigator.geolocation.watchPosition(function (e) {
   )
 
   E = e
-  var metersPerSecond = e.coords.speed || 0
-  var metersPerHour = metersPerSecond*3600
-  var metersPerNauticalMile = 1852.001
-  var knots = metersPerHour/metersPerNauticalMile
-  speed.textContent = round(knots, 2)
+//  var metersPerSecond = e.coords.speed || 0
+//  var metersPerHour = metersPerSecond*3600
+//  var metersPerNauticalMile = 1852.001
+//  var knots = metersPerHour/metersPerNauticalMile
+  
+  var _lat = positions[1] ? positions[1].latitude : lat, _long = positions[1] ? positions[1].longitude : long
+  var instant = {
+    heading: GreatCircle.bearing(_lat, _long, lat, long),
+    speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (positions[1] ? positons[0].timestame - positions[1].timestamp : 0 / (1000*60*60)),
+  }
+
+  speed.textContent = round(instant.speed, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
+
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
   pre.textContent = JSON.stringify({error:err.code, message: err.message}, null, 2)

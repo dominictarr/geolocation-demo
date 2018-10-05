@@ -5,7 +5,7 @@ var speed = document.createElement('h1')
 var position = document.createElement('h3')
 var average = document.createElement('div')
 var version = document.createElement('div')
-version.textContent = '5'
+version.textContent = '6'
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)
@@ -81,7 +81,7 @@ navigator.geolocation.watchPosition(function (e) {
   var names = ['10s', 'min', '5min', '15min','hour']
   for(var i = 0; i < movement.length && ago.length; i++)
     if(movement[i].time >= ago[0] - 1) {
-      s += names[0] + ':' + round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL +'\n'
+      s += names[0] + ':' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
       ago.shift()
       names.shift()
     }
@@ -96,5 +96,4 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
-
 

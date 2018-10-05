@@ -4,9 +4,12 @@ var GreatCircle = require('great-circle')
 var pre = document.createElement('pre')
 var speed = document.createElement('h1')
 var position = document.createElement('h3')
+var version = document.createElement('div')
+version.textContent = '2'
 document.body.appendChild(speed)
 document.body.appendChild(position)
 document.body.appendChild(pre)
+document.body.appendChild(version)
 
 console.log('loaded geolocation demo')
 
@@ -74,7 +77,7 @@ navigator.geolocation.watchPosition(function (e) {
     speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (positions[1] ? positions[0].timestame - positions[1].timestamp : 0 / (1000*60*60)),
   }
 
-  speed.textContent = round(instant.speed, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
+  speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
@@ -85,6 +88,8 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
+
+
 
 
 },{"great-circle":2}],2:[function(require,module,exports){

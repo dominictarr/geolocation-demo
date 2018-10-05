@@ -4,11 +4,11 @@ var pre = document.createElement('pre')
 var speed = document.createElement('h1')
 var position = document.createElement('h3')
 var version = document.createElement('div')
-version.textContent = '2'
+version.textContent = '3'
 document.body.appendChild(speed)
 document.body.appendChild(position)
-document.body.appendChild(pre)
 document.body.appendChild(version)
+document.body.appendChild(pre)
 
 console.log('loaded geolocation demo')
 
@@ -65,19 +65,7 @@ navigator.geolocation.watchPosition(function (e) {
   )
 
   E = e
-//  var metersPerSecond = e.coords.speed || 0
-//  var metersPerHour = metersPerSecond*3600
-//  var metersPerNauticalMile = 1852.001
-//  var knots = metersPerHour/metersPerNauticalMile
-  
-//  var _lat = positions[1] ? positions[1].latitude : lat, _long = positions[1] ? positions[1].longitude : long
-//  var instant = {
-//    heading: GreatCircle.bearing(_lat, _long, lat, long),
-//    speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (positions[1] ? positions[0].timestame - positions[1].timestamp : 0 / (1000*60*60)),
-//  }
-//
-
-  instant = movement[0] || {speed: 0, heading: NaN}
+  var instant = movement[0] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
   pre.textContent = JSON.stringify(movement, null, 2)
@@ -89,6 +77,8 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
+
+
 
 
 

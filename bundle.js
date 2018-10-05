@@ -6,13 +6,13 @@ var speed = document.createElement('h1')
 var position = document.createElement('h3')
 var average = document.createElement('div')
 var version = document.createElement('div')
-version.textContent = '4'
+version.textContent = '5'
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)
 document.body.appendChild(average)
 document.body.appendChild(pre)
-
+average.textContent = 'averages:'
 console.log('loaded geolocation demo')
 
 function flatten (p) {
@@ -43,7 +43,7 @@ function round(r, n) {
 navigator.geolocation.watchPosition(function (e) {
 
   //keep 15 minute's worth of locations.
-  while(positions.length && positions[0].timestamp < Date.now() - 15*60e3) // one minute
+  while(positions.length && positions[0].timestamp < Date.now() - 15*60e3) // 15 minutes
     positions.pop()
 
   var lat = e.coords.latitude, long = e.coords.longitude
@@ -78,8 +78,8 @@ navigator.geolocation.watchPosition(function (e) {
   averages = ''
   var ago = [10, 60, 5*60, 15*60,60*60]
   var names = ['10s', 'min', '5min', '15min','hour']
-  for(var i = 0; i < movement.length; i++)
-    if(movement[i].time > ago[0]) {
+  for(var i = 0; i < movement.length && ago.length; i++)
+    if(movement[i].time >= ago[0] - 1) {
       averages += names[0] + ':' + round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL +'\n'
       ago.shift()
       names.shift()

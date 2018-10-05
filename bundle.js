@@ -77,15 +77,17 @@ navigator.geolocation.watchPosition(function (e) {
   var instant = movement[Math.min(10, movement.length-1)] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
-  averages = ''
+  s = ''
   var ago = [10, 60, 5*60, 15*60,60*60]
   var names = ['10s', 'min', '5min', '15min','hour']
   for(var i = 0; i < movement.length && ago.length; i++)
     if(movement[i].time >= ago[0] - 1) {
-      averages += names[0] + ':' + round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL +'\n'
+      s += names[0] + ':' + round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL +'\n'
       ago.shift()
       names.shift()
     }
+
+  average.textContent = s
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
   console.log('error', new Date(), ERR = err)

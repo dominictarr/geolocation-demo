@@ -3,11 +3,13 @@ var GreatCircle = require('great-circle')
 var pre = document.createElement('pre')
 var speed = document.createElement('h1')
 var position = document.createElement('h3')
+var average = document.createElement('div')
 var version = document.createElement('div')
-version.textContent = '3'
+version.textContent = '4'
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)
+document.body.appendChild(average)
 document.body.appendChild(pre)
 
 console.log('loaded geolocation demo')
@@ -55,7 +57,7 @@ navigator.geolocation.watchPosition(function (e) {
         time: (e.timestamp - _e.timestamp)/1000
       }
     }
-  })
+  }).filter(Boolean)
 
   positions.unshift(flatten(e))
 
@@ -68,11 +70,19 @@ navigator.geolocation.watchPosition(function (e) {
 //  var _e = movement.find(function (e) {
 //    return e.time 
 //  })
-//
   E = e
   var instant = movement[Math.min(10, movement.length-1)] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
+  averages = ''
+  var ago = [10, 60, 5*60, 15*60,60*60]
+  var names = ['10s', 'min', '5min', '15min','hour']
+  for(var i = 0; i < movement.length; i++)
+    if(movement[i].time > ago[0]) {
+      averages += names[0] + ':' + round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL +'\n'
+      ago.shift()
+      names.shift()
+    }
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
   console.log('error', new Date(), ERR = err)
@@ -82,11 +92,5 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
-
-
-
-
-
-
 
 

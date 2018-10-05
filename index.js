@@ -3,9 +3,14 @@ var GreatCircle = require('great-circle')
 var pre = document.createElement('pre')
 var speed = document.createElement('h1')
 var position = document.createElement('h3')
+var version = document.createElement('div')
+version.textContent = '2'
 document.body.appendChild(speed)
 document.body.appendChild(position)
 document.body.appendChild(pre)
+document.body.appendChild(version)
+
+console.log('loaded geolocation demo')
 
 function flatten (p) {
   var o = {}
@@ -68,17 +73,20 @@ navigator.geolocation.watchPosition(function (e) {
   var _lat = positions[1] ? positions[1].latitude : lat, _long = positions[1] ? positions[1].longitude : long
   var instant = {
     heading: GreatCircle.bearing(_lat, _long, lat, long),
-    speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (positions[1] ? positons[0].timestame - positions[1].timestamp : 0 / (1000*60*60)),
+    speed: GreatCircle.distance(_lat, _long, lat, long, 'NM') / (positions[1] ? positions[0].timestame - positions[1].timestamp : 0 / (1000*60*60)),
   }
 
-  speed.textContent = round(instant.speed, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
+  speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
   pre.textContent = JSON.stringify(movement, null, 2)
 }, function (err) {
-  pre.textContent = JSON.stringify({error:err.code, message: err.message}, null, 2)
+  console.log('error', new Date(), ERR = err)
+  pre.textContent = JSON.stringify({error:err.code, message: err.message, time: new Date.toString()}, null, 2)
 }, {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0
 })
+
+
 

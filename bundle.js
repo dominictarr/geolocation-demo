@@ -82,7 +82,7 @@ navigator.geolocation.watchPosition(function (e) {
   var names = ['10s', 'min', '5min', '15min','hour']
   for(var i = 0; i < movement.length && ago.length; i++)
     if(movement[i].time >= ago[0] - 1) {
-      s += names[0] + ':' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
+      s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
       ago.shift()
       names.shift()
     }

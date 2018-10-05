@@ -6,8 +6,8 @@ var speed = document.createElement('h1')
 var position = document.createElement('h3')
 var version = document.createElement('div')
 version.textContent = '3'
-document.body.appendChild(speed)
 document.body.appendChild(position)
+document.body.appendChild(speed)
 document.body.appendChild(version)
 document.body.appendChild(pre)
 
@@ -39,11 +39,10 @@ function round(r, n) {
 }
 
 navigator.geolocation.watchPosition(function (e) {
-  positions.push(flatten(e))
 
   //keep 15 minute's worth of locations.
   while(positions.length && positions[0].timestamp < Date.now() - 15*60e3) // one minute
-    positions.shift()
+    positions.pop()
 
   var lat = e.coords.latitude, long = e.coords.longitude
   var movement = positions.map(function (_e, i) {
@@ -59,14 +58,20 @@ navigator.geolocation.watchPosition(function (e) {
     }
   })
 
+  positions.unshift(flatten(e))
+
   position.textContent = (
     decimalTudeToMinutes(e.coords.latitude)
     + ', ' +
     decimalTudeToMinutes(e.coords.longitude)
   )
 
+//  var _e = movement.find(function (e) {
+//    return e.time 
+//  })
+//
   E = e
-  var instant = movement[0] || {speed: 0, heading: NaN}
+  var instant = movement[Math.min(10, movement.length-1)] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
 
   pre.textContent = JSON.stringify(movement, null, 2)
@@ -78,6 +83,9 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
+
+
+
 
 
 

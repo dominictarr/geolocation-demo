@@ -42,6 +42,8 @@ function round(r, n) {
 
 navigator.geolocation.watchPosition(function (e) {
 
+  e.timestamp = Date.now() //fix timestamp
+
   //keep 15 minute's worth of locations.
   while(positions.length && positions[0].timestamp < Date.now() - 15*60e3) // 15 minutes
     positions.pop()

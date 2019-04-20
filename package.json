@@ -13,7 +13,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done",
-    "appcache": "echo \"CACHE MANIFEST\n/index.html\n/bundle.js\n\n#$(date)\" > manifest.appcache",
+    "appcache": "echo \"CACHE MANIFEST\n\nCACHE:\n/geolocation-demo/\n/\n/geolocation-demo/bundle.js\n\n#$(date)\" > manifest.appcache",
     "build": "browserify index.js > bundle.js; npm run appcache",
     "deploy": "npm run build; git commit . -m 'update'; git push origin master"
   },

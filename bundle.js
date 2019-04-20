@@ -6,7 +6,7 @@ var speed = document.createElement('h1')
 var position = document.createElement('h3')
 var average = document.createElement('div')
 var version = document.createElement('div')
-version.textContent = '6'
+version.textContent = '7'
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)

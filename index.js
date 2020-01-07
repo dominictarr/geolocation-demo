@@ -6,6 +6,13 @@ var position = document.createElement('h3')
 var average = document.createElement('div')
 var version = document.createElement('div')
 version.textContent = '7'
+var canvas = document.createElement('canvas')
+canvas.width = 400
+canvas.height = 400
+document.body.appendChild(canvas)
+var compass = require('./compass')(canvas)
+compass([]) //initial drawing...
+
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)
@@ -72,6 +79,7 @@ navigator.geolocation.watchPosition(function (e) {
 //  var _e = movement.find(function (e) {
 //    return e.time 
 //  })
+
   E = e
   var instant = movement[Math.min(10, movement.length-1)] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
@@ -88,6 +96,7 @@ navigator.geolocation.watchPosition(function (e) {
 
   average.textContent = s
   pre.textContent = JSON.stringify(movement, null, 2)
+  compass(movement)
 }, function (err) {
   console.log('error', new Date(), ERR = err)
   pre.textContent = JSON.stringify({error:err.code, message: err.message, time: new Date.toString()}, null, 2)
@@ -96,4 +105,3 @@ navigator.geolocation.watchPosition(function (e) {
   timeout: 5000,
   maximumAge: 0
 })
-

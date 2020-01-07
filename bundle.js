@@ -1,4 +1,37 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+module.exports = function (canvas) {
+  var ctx = canvas.getContext('2d')
+  return function (movement) {
+    var tl = {x: 0, y: 0}
+    var br = {x: canvas.width, y: canvas.height}
+    var center = {x: (tl.x + br.x)/2, y: (tl.y + br.y)/2}
+    ctx.beginPath()
+    ctx.moveTo(center.x, tl.y)
+    ctx.lineTo(center.x, br.y)
+    ctx.moveTo(tl.x, center.y)
+    ctx.lineTo(br.x, center.y)
+    var radius = Math.min(center.x, center.y)
+    var scale = 10 / radius
+    ctx.ellipse(center.x, center.y, radius, radius, 0, 0, Math.PI*2)
+
+    var ago = [0, 10] //, 60, 5*60, 15*60,60*60]
+//    var names = ['10s', 'min', '5min', '15min','hour']
+    for(var i = 0; i < movement.length && ago.length; i++)
+      if(movement[i].time >= ago[0] - 1) {
+        ctx.moveTo(center.x, center.y)
+        ctx.lineTo(center.x + scale * movement[i].speed, center.y + scale * movement[i].speed)
+
+    //    s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
+  //      ago.shift()
+//        names.shift()
+      }
+    ctx.stroke()
+
+  }
+}
+
+},{}],2:[function(require,module,exports){
 var GreatCircle = require('great-circle')
 
 var pre = document.createElement('pre')
@@ -7,6 +40,13 @@ var position = document.createElement('h3')
 var average = document.createElement('div')
 var version = document.createElement('div')
 version.textContent = '7'
+var canvas = document.createElement('canvas')
+canvas.width = 400
+canvas.height = 400
+document.body.appendChild(canvas)
+var compass = require('./compass')(canvas)
+compass([]) //initial drawing...
+
 document.body.appendChild(position)
 document.body.appendChild(speed)
 document.body.appendChild(version)
@@ -73,6 +113,7 @@ navigator.geolocation.watchPosition(function (e) {
 //  var _e = movement.find(function (e) {
 //    return e.time 
 //  })
+
   E = e
   var instant = movement[Math.min(10, movement.length-1)] || {speed: 0, heading: NaN}
   speed.textContent = round(instant.speed || 0, 2) + ' ' + round(instant.heading, 2) + DEGREE_SYMBOL
@@ -89,6 +130,7 @@ navigator.geolocation.watchPosition(function (e) {
 
   average.textContent = s
   pre.textContent = JSON.stringify(movement, null, 2)
+  compass(movement)
 }, function (err) {
   console.log('error', new Date(), ERR = err)
   pre.textContent = JSON.stringify({error:err.code, message: err.message, time: new Date.toString()}, null, 2)
@@ -98,8 +140,7 @@ navigator.geolocation.watchPosition(function (e) {
   maximumAge: 0
 })
 
-
-},{"great-circle":2}],2:[function(require,module,exports){
+},{"./compass":1,"great-circle":3}],3:[function(require,module,exports){
 var GreatCircle = {
 
     validateRadius: function(unit) {
@@ -161,4 +202,4 @@ if (typeof module != 'undefined' && module.exports) {
     window['GreatCircle'] = GreatCircle;
 }
 
-},{}]},{},[1]);
+},{}]},{},[2]);

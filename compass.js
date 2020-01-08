@@ -16,7 +16,7 @@ module.exports = function (canvas) {
     var scale = radius/10
     ctx.ellipse(center.x, center.y, radius, radius, 0, 0, Math.PI*2)
 
-    var ago = [0] //, 60, 5*60, 15*60,60*60]
+    var ago = [0, 10, 30, 60, 5*60] //, 60, 5*60, 15*60,60*60]
 //    var names = ['10s', 'min', '5min', '15min','hour']
 
     for(var i = 0; i < movement.length && (ago.length > 0); i++)

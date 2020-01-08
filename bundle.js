@@ -18,19 +18,25 @@ module.exports = function (canvas) {
     ctx.ellipse(center.x, center.y, radius, radius, 0, 0, Math.PI*2)
 
     var ago = [0, 10, 30, 60, 5*60] //, 60, 5*60, 15*60,60*60]
+    var colours = ['black', 'darkgray', 'lightgray', 'darkblue', 'lightblue']
 //    var names = ['10s', 'min', '5min', '15min','hour']
+
+    ctx.stroke()
 
     for(var i = 0; i < movement.length && (ago.length > 0); i++)
       if(movement[i].time >= ago[0] - 0.1) {
+        ago.shift()
+        ctx.beginPath()
+        ctx.strokeStyle = colours.shift()
         ctx.moveTo(center.x, center.y)
         var radians = (movement[i].heading/360) * Math.PI*2
         ctx.lineTo(
           center.x + (Math.sin(radians) * scale * movement[i].speed),
-          center.y + (Math.cos(radians) * scale * movement[i].speed)
+          center.y - (Math.cos(radians) * scale * movement[i].speed)
         )
+    ctx.stroke()
 
     //    s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
-        ago.shift()
 //        names.shift()
       }
 

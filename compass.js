@@ -17,12 +17,16 @@ module.exports = function (canvas) {
     var scale = radius/10
     ctx.ellipse(center.x, center.y, radius, radius, 0, 0, Math.PI*2)
 
-    var ago = [0, 10] //, 60, 5*60, 15*60,60*60]
+    var ago = [0] //, 60, 5*60, 15*60,60*60]
 //    var names = ['10s', 'min', '5min', '15min','hour']
     for(var i = 0; i < movement.length && ago.length; i++)
       if(movement[i].time >= ago[0] - 1) {
         ctx.moveTo(center.x, center.y)
-        ctx.lineTo(center.x + (scale * movement[i].speed), center.y + (scale * movement[i].speed))
+        var radians = (movement[i].heading/360) * Math.PI*2
+        ctx.lineTo(
+          center.x + (Math.cos(radians) * scale * movement[i].speed),
+          center.y + (Math.sin(radians) * scale * movement[i].speed)
+        )
 
     //    s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
   //      ago.shift()

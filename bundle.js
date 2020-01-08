@@ -6,6 +6,9 @@ module.exports = function (canvas) {
     var tl = {x: 0, y: 0}
     var br = {x: canvas.width, y: canvas.height}
     var center = {x: (tl.x + br.x)/2, y: (tl.y + br.y)/2}
+    ctx.fillStyle = 'white'
+    ctx.fillRect(tl.x, tl.y, br.x, br.y)
+
     ctx.beginPath()
     ctx.moveTo(center.x, tl.y)
     ctx.lineTo(center.x, br.y)

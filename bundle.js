@@ -20,8 +20,8 @@ module.exports = function (canvas) {
     var ago = [0] //, 60, 5*60, 15*60,60*60]
 //    var names = ['10s', 'min', '5min', '15min','hour']
 
-    for(var i = 0; i < movement.length && ago.length; i++)
-      if(movement[i].time >= ago[0] - 1) {
+    for(var i = 0; i < movement.length && (ago.length > 0); i++)
+      if(movement[i].time >= ago[0] - 0.1) {
         ctx.moveTo(center.x, center.y)
         var radians = (movement[i].heading/360) * Math.PI*2
         ctx.lineTo(
@@ -33,6 +33,7 @@ module.exports = function (canvas) {
         ago.shift()
 //        names.shift()
       }
+
     ctx.stroke()
 
   }

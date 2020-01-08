@@ -8,6 +8,7 @@ module.exports = function (canvas) {
     ctx.fillStyle = 'white'
     ctx.fillRect(tl.x, tl.y, br.x, br.y)
     ctx.beginPath()
+    ctx.strokeStyle = 'lightgray'
     ctx.moveTo(center.x, tl.y)
     ctx.lineTo(center.x, br.y)
     ctx.moveTo(tl.x, center.y)

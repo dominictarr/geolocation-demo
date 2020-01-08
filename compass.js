@@ -7,7 +7,6 @@ module.exports = function (canvas) {
     var center = {x: (tl.x + br.x)/2, y: (tl.y + br.y)/2}
     ctx.fillStyle = 'white'
     ctx.fillRect(tl.x, tl.y, br.x, br.y)
-
     ctx.beginPath()
     ctx.moveTo(center.x, tl.y)
     ctx.lineTo(center.x, br.y)
@@ -24,8 +23,8 @@ module.exports = function (canvas) {
         ctx.moveTo(center.x, center.y)
         var radians = (movement[i].heading/360) * Math.PI*2
         ctx.lineTo(
-          center.x + (Math.cos(radians) * scale * movement[i].speed),
-          center.y + (Math.sin(radians) * scale * movement[i].speed)
+          center.x + (Math.sin(radians) * scale * movement[i].speed),
+          center.y + (Math.cos(radians) * scale * movement[i].speed)
         )
 
     //    s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'

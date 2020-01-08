@@ -11,7 +11,7 @@ module.exports = function (canvas) {
     ctx.moveTo(tl.x, center.y)
     ctx.lineTo(br.x, center.y)
     var radius = Math.min(center.x, center.y)
-    var scale = 10 / radius
+    var scale = radius/10
     ctx.ellipse(center.x, center.y, radius, radius, 0, 0, Math.PI*2)
 
     var ago = [0, 10] //, 60, 5*60, 15*60,60*60]
@@ -19,7 +19,7 @@ module.exports = function (canvas) {
     for(var i = 0; i < movement.length && ago.length; i++)
       if(movement[i].time >= ago[0] - 1) {
         ctx.moveTo(center.x, center.y)
-        ctx.lineTo(center.x + scale * movement[i].speed, center.y + scale * movement[i].speed)
+        ctx.lineTo(center.x + (scale * movement[i].speed), center.y + (scale * movement[i].speed))
 
     //    s += names[0] + ': ' + round(movement[i].speed || 0, 2) + ' ' + round(movement[i].heading, 2) + DEGREE_SYMBOL +'\n'
   //      ago.shift()
